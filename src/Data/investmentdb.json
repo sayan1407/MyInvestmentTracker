@@ -1,0 +1,28 @@
+{
+  "investments": [
+    {
+      "id": "1",
+      "investmentName": "Tata small cap fund",
+      "amount": 7000,
+      "date": "2025-04-15"
+    },
+    {
+      "id": "2",
+      "investmentName": "Navi Nifty50 index fund",
+      "amount": 4000,
+      "date": "2025-05-01"
+    },
+    {
+      "id": "495e",
+      "investmentName": "Crypto",
+      "amount": 3000,
+      "date": "2025-05-15"
+    },
+    {
+      "id": "de4d",
+      "investmentName": "Tata small cap fund",
+      "amount": "5000",
+      "date": "2025-05-01"
+    }
+  ]
+}

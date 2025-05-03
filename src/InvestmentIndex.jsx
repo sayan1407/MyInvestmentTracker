@@ -1,40 +1,53 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InvestmentList from './InvestmentList'
+import { useAddInvestmentMutation, useGetInvestmentsQuery, useUpdateInvestmentMutation } from './Api/investmentApi'
 
 function InvestmentIndex() {
-    const [invetments,setInvestments] = useState(() => {
-        return [{
-            investmentName: "Tata small cap fund",
-            amount: 5000,
-            date: "2025-05-01"
-        },
-        {
-            investmentName: "Navi Nifty50 index fund",
-            amount: 4000,
-            date: "2025-05-01"
-        },
-       ]
-    })
+    const{data,isLoading} = useGetInvestmentsQuery();
+    console.log(data);
+    const [invetments,setInvestments] = useState([])
+    const [addInvestment] = useAddInvestmentMutation();
+    useEffect(() => {
+        if(!isLoading)
+          setInvestments(data);
+     
+          
+    },[data])
     const [investmentName, setInvestmentName] = useState("");
     const [amount, setAmount] = useState(0);
     const[investmentDate, setInvestmentDate] = useState("");
+    const [updateInvestment] = useUpdateInvestmentMutation();
     const handleAddInvestment = (e) => {
         e.preventDefault();
-        setInvestments((prevState) => {
-            var existingInvestment = invetments.filter((investment) => investment.investmentName.toUpperCase() === investmentName.toUpperCase())
-            if(existingInvestment.length > 0){
-                 return prevState.map((investment) => {
-                    if(investment.investmentName.toUpperCase() === investmentName.toUpperCase())
-                    {
-                        return {...investment, amount: parseInt(investment.amount) + parseInt(amount), date: investmentDate}
-                    }
-                    return investment;
-                 });
-            } 
-            else{           
-            return [...prevState, {investmentName: investmentName, amount: amount, date: investmentDate}];
-            }
-        })
+        var existingInvestment = invetments.filter((investment) => investment.investmentName.toUpperCase() === investmentName.toUpperCase() && new Date(investment.date).getMonth() === new Date(investmentDate).getMonth());
+        if (existingInvestment.length > 0) {
+          updateInvestment({
+            ...existingInvestment[0],
+            amount:  parseInt(existingInvestment[0].amount) + parseInt(amount),
+            date: investmentDate,
+          });
+        } else {
+          addInvestment({
+            investmentName: investmentName,
+            amount: amount,
+            date: investmentDate,
+          });
+        }
+        // setInvestments((prevState) => {
+        //     var existingInvestment = invetments.filter((investment) => investment.investmentName.toUpperCase() === investmentName.toUpperCase())
+        //     if(existingInvestment.length > 0){
+        //          return prevState.map((investment) => {
+        //             if(investment.investmentName.toUpperCase() === investmentName.toUpperCase())
+        //             {
+        //                 return {...investment, amount: parseInt(investment.amount) + parseInt(amount), date: investmentDate}
+        //             }
+        //             return investment;
+        //          });
+        //     } 
+        //     else{           
+        //     return [...prevState, {investmentName: investmentName, amount: amount, date: investmentDate}];
+        //     }
+        // })
         setInvestmentName("");
         setAmount(0);
         setInvestmentDate("");
@@ -60,7 +73,7 @@ function InvestmentIndex() {
                         <div className="col-6">
                             <label for="amount" className="form-label">Amount</label>
                             <input type="number" className="form-control" id="amount" name="amount" 
-                            value={amount} onChange={(e) => setAmount(e.target.value)}  required/>
+                            value={amount} onChange={(e) => setAmount(e.target.value)} min="1"  required/>
                         </div>
                         <div className="col-6">
                             <label for="investmentDate" className="form-label">Date</label>
