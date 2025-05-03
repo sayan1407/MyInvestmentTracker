@@ -15,9 +15,19 @@ function InvestmentList(props) {
                     <tbody id="investmentList">
                         {props.investmentList.map((investment, index) => (
                             <tr key={index}>
+                                <td hidden>{investment.id}</td>
                                 <td>{investment.investmentName}</td>
                                 <td>{investment.amount}</td>
                                 <td>{investment.date}</td>
+                                <td>
+                                    <button className='btn btn-primary' onClick={() => props.handleUpdating(investment.id,investment.investmentName,investment.date,investment.amount)}>
+                                       <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button className='btn btn-danger' onClick={() => props.handleDelete(investment.id)}>
+                                       <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import InvestmentList from './InvestmentList'
-import { useAddInvestmentMutation, useGetInvestmentsQuery, useUpdateInvestmentMutation } from './Api/investmentApi'
+import { useAddInvestmentMutation, useDeleteInvestmentMutation, useGetInvestmentsQuery, useUpdateInvestmentMutation } from './Api/investmentApi'
 
 function InvestmentIndex() {
     const{data,isLoading} = useGetInvestmentsQuery();
-    console.log(data);
     const [invetments,setInvestments] = useState([])
     const [addInvestment] = useAddInvestmentMutation();
     useEffect(() => {
@@ -16,14 +15,56 @@ function InvestmentIndex() {
     const [investmentName, setInvestmentName] = useState("");
     const [amount, setAmount] = useState(0);
     const[investmentDate, setInvestmentDate] = useState("");
+    const[investmentId, setInvestmentId] = useState(0)
     const [updateInvestment] = useUpdateInvestmentMutation();
     const handleAddInvestment = (e) => {
-        e.preventDefault();
-        var existingInvestment = invetments.filter((investment) => investment.investmentName.toUpperCase() === investmentName.toUpperCase() && new Date(investment.date).getMonth() === new Date(investmentDate).getMonth());
+      e.preventDefault();
+      if (isUpdating) {
+        var existingInvestmentWithDifferentId = invetments.filter((investment) =>
+            investment.investmentName.toUpperCase() ===
+              investmentName.toUpperCase() &&
+            new Date(investment.date).getMonth() ===
+              new Date(investmentDate).getMonth()
+              && investment.id != investmentId
+        );
+        if(existingInvestmentWithDifferentId.length > 0)
+        {
+            var newAmount = 0;
+            existingInvestmentWithDifferentId.map((i) => {
+                newAmount += i.amount;
+                deleteInvestment(i.id)
+                
+            });
+            updateInvestment({
+                id: investmentId,
+                investmentName: investmentName,
+                amount: Number(amount) + Number(newAmount),
+                date: investmentDate,
+              });
+        }
+        else{
+            updateInvestment({
+                id: investmentId,
+                investmentName: investmentName,
+                amount: amount,
+                date: investmentDate,
+              });
+       
+        }
+        setIsUpdating(false);
+      } else {
+        var existingInvestment = invetments.filter(
+          (investment) =>
+            investment.investmentName.toUpperCase() ===
+              investmentName.toUpperCase() &&
+            new Date(investment.date).getMonth() ===
+              new Date(investmentDate).getMonth()
+        );
         if (existingInvestment.length > 0) {
+          
           updateInvestment({
             ...existingInvestment[0],
-            amount:  parseInt(existingInvestment[0].amount) + parseInt(amount),
+            amount: parseInt(existingInvestment[0].amount) + parseInt(amount),
             date: investmentDate,
           });
         } else {
@@ -33,24 +74,25 @@ function InvestmentIndex() {
             date: investmentDate,
           });
         }
-        // setInvestments((prevState) => {
-        //     var existingInvestment = invetments.filter((investment) => investment.investmentName.toUpperCase() === investmentName.toUpperCase())
-        //     if(existingInvestment.length > 0){
-        //          return prevState.map((investment) => {
-        //             if(investment.investmentName.toUpperCase() === investmentName.toUpperCase())
-        //             {
-        //                 return {...investment, amount: parseInt(investment.amount) + parseInt(amount), date: investmentDate}
-        //             }
-        //             return investment;
-        //          });
-        //     } 
-        //     else{           
-        //     return [...prevState, {investmentName: investmentName, amount: amount, date: investmentDate}];
-        //     }
-        // })
-        setInvestmentName("");
-        setAmount(0);
-        setInvestmentDate("");
+      }
+
+      setInvestmentName("");
+      setAmount(0);
+      setInvestmentDate("");
+    }
+    const [isUpdating,setIsUpdating] = useState(false)
+    const handleUpdating = (updatingInvestmentId,updatingInvestmentName,updatingInvestmentDate,updatingAmount) => {
+            setIsUpdating(true)
+            setInvestmentName(updatingInvestmentName)
+            setInvestmentDate(updatingInvestmentDate)
+            setAmount(updatingAmount)
+            setInvestmentId(updatingInvestmentId)
+    }
+    const[deleteInvestment] = useDeleteInvestmentMutation();
+    
+    const handleDelete = async (id) => {
+        console.log(id)
+        await deleteInvestment(id);
     }
     const date = new Date();
     const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
@@ -83,7 +125,7 @@ function InvestmentIndex() {
 
                     </div>
                     
-                    <button type="submit" className="btn btn-primary mb-3">Add</button>
+                    <button type="submit" className={`btn  ${isUpdating ? "btn-success" : "btn-primary"} mb-3` }>{isUpdating ? "Update" : "Add"}</button>
                 </form>
             </div>
         </div>
@@ -123,7 +165,9 @@ function InvestmentIndex() {
                 const invDate = new Date(investment.date);
              
                 return invDate.getMonth() === parseInt(selectedMonth) && invDate.getFullYear() === parseInt(selectedYear);
-            })}/>
+            })}
+            handleUpdating = {handleUpdating}
+            handleDelete = {handleDelete}/>
         </div>
     </div>
   )

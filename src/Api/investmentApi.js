@@ -32,10 +32,10 @@ export const investmentAPI = createApi({
       invalidatesTags : ["Investments"]
     }),
     deleteInvestment: builder.mutation({
-      query: ({id}) => ({
+      query: (id) => ({
         url : `investments/${id}`,
         method : "DELETE",
-        body : id
+        //body : id
       }) ,
       invalidatesTags : ["Investments"]
     })
