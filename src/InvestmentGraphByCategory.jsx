@@ -4,8 +4,14 @@ function InvestmentGraphByCategory(props) {
   
 
      
-     
-    const investmentByCategory = props.investments.reduce((arr, item) => {
+    const inv = props.investments.filter((i) => {
+        const date = new Date(i.date);
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        if(props.month == month && props.year == year)
+            return i;
+    })
+    const investmentByCategory = inv.reduce((arr, item) => {
           
           const name = item.investmentName.toUpperCase().trim();
           const amount = item.amount;
