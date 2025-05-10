@@ -33,7 +33,7 @@
     {
       "id": "76e5",
       "investmentName": "Large Cap Fund",
-      "amount": "5000",
+      "amount": "6000",
       "date": "2025-02-10"
     },
     {
@@ -59,6 +59,12 @@
       "investmentName": "Mid Cap Fund",
       "amount": "3000",
       "date": "2025-03-03"
+    },
+    {
+      "id": "5b47",
+      "investmentName": "Insurance",
+      "amount": "8000",
+      "date": "2025-05-22"
     }
   ]
 }

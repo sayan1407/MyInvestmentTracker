@@ -17,9 +17,14 @@ function InvestmentGraph(props) {
           "December",
         ];
 
+      const inv = props.investments.filter((i) => {
+        const date = new Date(i.date);
+        const year = date.getFullYear();
+        if(props.year == year)
+            return i;
+    })
      
-     
-    const investmentByMonth = props.investments.reduce((arr, item) => {
+    const investmentByMonth = inv.reduce((arr, item) => {
           const date = new Date(item.date);
           const month = date.getMonth();
           const amount = item.amount;

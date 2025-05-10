@@ -106,15 +106,17 @@ function InvestmentIndex() {
 
     const [selectedMonthForCategory, setselectedMonthForCategory] = useState(date.getMonth());
     const [selectedYearCategory, setselectedYearCategory] = useState(date.getFullYear());
+
+    const [selectedYearForGraph, setselectedYearForGraph] = useState(date.getFullYear());
     
    
   return (
-    <div className="container">
-      <h1 className="h1 text-success text-center">My Invetment Tracker</h1>
-      <div className="row mb-5">
-        <div className="col-6 offset-3 border">
+    <div className="container py-5">
+      <h1 className="text-center mb-5">My Invetment Tracker</h1>
+      <div className="row justify-content-center mb-5">
+        <div className="col-md-6 card-style">
           <form method="POST" onSubmit={handleAddInvestment}>
-            <div className="mb-3 mt-3">
+            <div className="mb-3">
               <label htmlFor="investmentName" className="form-label">
                 Invetment Name
               </label>
@@ -129,7 +131,7 @@ function InvestmentIndex() {
               />
             </div>
             <div className="row mb-3">
-              <div className="col-6">
+              <div className="col-md-6">
                 <label htmlFor="amount" className="form-label">
                   Amount
                 </label>
@@ -144,7 +146,7 @@ function InvestmentIndex() {
                   required
                 />
               </div>
-              <div className="col-6">
+              <div className="col-md-6">
                 <label htmlFor="investmentDate" className="form-label">
                   Date
                 </label>
@@ -164,111 +166,26 @@ function InvestmentIndex() {
               type="submit"
               className={`btn  ${
                 isUpdating ? "btn-success" : "btn-primary"
-              } mb-3`}
+              } mb-3 w-100`}
             >
               {isUpdating ? "Update" : "Add"}
             </button>
           </form>
         </div>
       </div>
-      <div className="row mb-3"></div>
-      <div className="row mb-3"></div>
-      <div className="row mb-3"></div>
 
-      <div className="row mt-3">
-        <div className="offset-3 col-2">
-          <select
-            className="form-select"
-            id="monthSelect"
-            aria-label="Default select example"
-            onChange={(e) => {
-              setSelectedMonth(e.target.value);
-            }}
-            defaultValue={selectedMonth}
-          >
-            {/* <!-- <option value={selectedMonth} selected>{months[selectedMonth]}</option> --> */}
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8">September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
-          </select>
-        </div>
-        <div className="col-2">
-          <select
-            className="form-select"
-            id="monthSelect"
-            aria-label="Default select example"
-            onChange={(e) => {
-              setSelectedYear(e.target.value);
-            }}
-            defaultValue={selectedYear}
-          >
-            {/* <option selected>{selectedYear}</option> */}
-            <option value="2025">2025</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="row mt-6">
-        <InvestmentList
-          investmentList={invetments.filter((investment) => {
-            const invDate = new Date(investment.date);
-
-            return (
-              invDate.getMonth() === parseInt(selectedMonth) &&
-              invDate.getFullYear() === parseInt(selectedYear)
-            );
-          })}
-          handleUpdating={handleUpdating}
-          handleDelete={handleDelete}
-        />
-      </div>
-      <div className="row mb-3"></div>
-      <div className="row mb-3"></div>
-      <div className="row mb-3"></div>
-      <div className='border  border-info m-5 border-3'>
-        <div className="row mt-3">
-          <div className="col-2 offset-2">
+      <div className="row justify-content-center mt-5">
+        <div className="col-md-6 card-style">
+          <h2 className="text-center mb-4">Investment List</h2>
+          <div className="select-group mb-4">
             <select
-              className="form-select"
-              id="yearSelectForGraph"
+              className="form-select w-auto"
+              id="monthSelect"
               aria-label="Default select example"
               onChange={(e) => {
-                setSelectedYear(e.target.value);
+                setSelectedMonth(e.target.value);
               }}
-              defaultValue={selectedYear}
-            >
-              {/* <option selected>{selectedYear}</option> */}
-              <option value="2025">2025</option>
-            </select>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-6 offset-1">
-            <InvestmentGraph investments={invetments} />
-          </div>
-        </div>
-      </div>
-
-      <div className="border  border-warning m-5 border-3">
-        <div className="row mt-5">
-          <div className="offset-3 col-2">
-            <select
-              className="form-select"
-              id="monthSelectForCategoryGraph"
-              aria-label="Default select example"
-              onChange={(e) => {
-                setselectedMonthForCategory(e.target.value);
-              }}
-              defaultValue={selectedMonthForCategory}
+              defaultValue={selectedMonth}
             >
               {/* <!-- <option value={selectedMonth} selected>{months[selectedMonth]}</option> --> */}
               <option value="0">January</option>
@@ -284,24 +201,99 @@ function InvestmentIndex() {
               <option value="10">November</option>
               <option value="11">December</option>
             </select>
-          </div>
-          <div className="col-2">
+
             <select
-              className="form-select"
-              id="yearSelectForCategoryGraph"
+              className="form-select w-auto"
+              id="monthSelect"
               aria-label="Default select example"
               onChange={(e) => {
-                setselectedYearCategory(e.target.value);
+                setSelectedYear(e.target.value);
               }}
-              defaultValue={selectedYearCategory}
+              defaultValue={selectedYear}
             >
               {/* <option selected>{selectedYear}</option> */}
               <option value="2025">2025</option>
             </select>
           </div>
+          <InvestmentList
+            investmentList={invetments.filter((investment) => {
+              const invDate = new Date(investment.date);
+
+              return (
+                invDate.getMonth() === parseInt(selectedMonth) &&
+                invDate.getFullYear() === parseInt(selectedYear)
+              );
+            })}
+            handleUpdating={handleUpdating}
+            handleDelete={handleDelete}
+          />
         </div>
-        <div className="row">
-          <div className="col-6 offset-1">
+      </div>
+
+      <div className="row justify-content-center mt-5">
+        <div className="col-md-10  card-style">
+          <h2 className="text-center mb-4">Investment Tracker by Month</h2>
+          <div id="chartByMonth" style={{ height: "100%", width: "100%" }}>
+            <div className="select-group">
+              <select
+                className="form-select w-auto"
+                id="yearSelectForGraph"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setselectedYearForGraph(e.target.value);
+                }}
+                defaultValue={selectedYearForGraph}
+              >
+                {/* <option selected>{selectedYear}</option> */}
+                <option value="2025">2025</option>
+              </select>
+            </div>
+            <InvestmentGraph investments={invetments} year={selectedYearForGraph}/>
+          </div>
+        </div>
+      </div>
+
+      <div className="row justify-content-center mt-5">
+        <div className="col-md-10  card-style">
+          <h2 className="text-center mb-4">Investment Tracker by Category</h2>
+          <div id="chartByMonth" style={{ height: "100%", width: "100%" }}>
+            <div className="select-group">
+              <select
+                className="form-select w-auto"
+                id="monthSelectForCategoryGraph"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setselectedMonthForCategory(e.target.value);
+                }}
+                defaultValue={selectedMonthForCategory}
+              >
+                {/* <!-- <option value={selectedMonth} selected>{months[selectedMonth]}</option> --> */}
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+              </select>
+              <select
+                className="form-select w-auto"
+                id="yearSelectForGraph"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  setselectedYearCategory(e.target.value);
+                }}
+                defaultValue={selectedYearCategory}
+              >
+                {/* <option selected>{selectedYear}</option> */}
+                <option value="2025">2025</option>
+              </select>
+            </div>
             <InvestmentGraphByCategory
               investments={invetments}
               month={selectedMonthForCategory}

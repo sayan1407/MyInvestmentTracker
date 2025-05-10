@@ -2,9 +2,9 @@ import React from 'react'
 
 function InvestmentList(props) {
   return (
-    <div className="col-6 offset-3 mt-3 border">
-                <h2 className="h2 text-center">Investment List</h2>
-                <table className="table table-striped">
+    <div className="">
+               
+                <table className="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Investment Name</th>
