@@ -4,6 +4,8 @@ import { useAddInvestmentMutation, useDeleteInvestmentMutation, useGetInvestment
 import { useGetGraphQuery } from './Api/InvestmentGraphAPI'
 import InvestmentGraph from './InvestmentGraph';
 import InvestmentGraphByCategory from './InvestmentGraphByCategory';
+import MainLoader from './MainLoader';
+
 
 
 function InvestmentIndex() {
@@ -100,15 +102,33 @@ function InvestmentIndex() {
         console.log(id)
         await deleteInvestment(id);
     }
-    const date = new Date();
-    const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
-    const [selectedYear, setSelectedYear] = useState(date.getFullYear());
+    const currentDate = new Date();
+    const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
+    const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
 
-    const [selectedMonthForCategory, setselectedMonthForCategory] = useState(date.getMonth());
-    const [selectedYearCategory, setselectedYearCategory] = useState(date.getFullYear());
+    const [selectedMonthForCategory, setselectedMonthForCategory] = useState(currentDate.getMonth());
+    const [selectedYearCategory, setselectedYearCategory] = useState(currentDate.getFullYear());
 
-    const [selectedYearForGraph, setselectedYearForGraph] = useState(date.getFullYear());
+    const [selectedYearForGraph, setselectedYearForGraph] = useState(currentDate.getFullYear());
     
+    const minYear = invetments.reduce((min,item) => {
+      const date = new Date(item.date)
+
+      if(date.getFullYear() <= min)
+        min = date.getFullYear()
+      return min
+    },9999);
+    const maxYear = invetments.reduce((max,item) => {
+      const date = new Date(item.date)
+      if(date.getFullYear() >= max)
+        max = date.getFullYear()
+      return max
+    },0);
+
+    let years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
+    console.log(selectedYearForGraph)
+ 
+
    
   return (
     <div className="container py-5">
@@ -209,10 +229,12 @@ function InvestmentIndex() {
               onChange={(e) => {
                 setSelectedYear(e.target.value);
               }}
-              defaultValue={selectedYear}
+              value={selectedYear}
             >
-              {/* <option selected>{selectedYear}</option> */}
-              <option value="2025">2025</option>
+              {years.map((item,index) => (
+                    <option value={item} key={index}>{item}</option>
+                ))}
+                
             </select>
           </div>
           <InvestmentList
@@ -242,13 +264,19 @@ function InvestmentIndex() {
                 onChange={(e) => {
                   setselectedYearForGraph(e.target.value);
                 }}
-                defaultValue={selectedYearForGraph}
+                value={selectedYearForGraph}
               >
                 {/* <option selected>{selectedYear}</option> */}
-                <option value="2025">2025</option>
+                {years.map((item,index) => (
+                    <option value={item} key={index}>{item}</option>
+                ))}
+                
               </select>
             </div>
-            <InvestmentGraph investments={invetments} year={selectedYearForGraph}/>
+            {isLoading ? <MainLoader/> : <InvestmentGraph investments={invetments} year={selectedYearForGraph}/>}
+             
+          
+            
           </div>
         </div>
       </div>
@@ -288,10 +316,12 @@ function InvestmentIndex() {
                 onChange={(e) => {
                   setselectedYearCategory(e.target.value);
                 }}
-                defaultValue={selectedYearCategory}
+                value={selectedYearCategory}
               >
-                {/* <option selected>{selectedYear}</option> */}
-                <option value="2025">2025</option>
+                {years.map((item,index) => (
+                    <option value={item} key={index}>{item}</option>
+                ))}
+                
               </select>
             </div>
             <InvestmentGraphByCategory
