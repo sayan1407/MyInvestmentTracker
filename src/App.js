@@ -1,9 +1,14 @@
 import React from 'react';
 import InvestmentIndex from './InvestmentIndex';
+import InvestmentGraph from './InvestmentGraph';
 
 function App() {
   return (
-    <InvestmentIndex/>
+    <div>
+      <InvestmentIndex/>
+
+    </div>
+    
   );
 }
 

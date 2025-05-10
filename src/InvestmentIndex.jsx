@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import InvestmentList from './InvestmentList'
 import { useAddInvestmentMutation, useDeleteInvestmentMutation, useGetInvestmentsQuery, useUpdateInvestmentMutation } from './Api/investmentApi'
+import { useGetGraphQuery } from './Api/InvestmentGraphAPI'
+import InvestmentGraph from './InvestmentGraph';
+
 
 function InvestmentIndex() {
     const{data,isLoading} = useGetInvestmentsQuery();
     const [invetments,setInvestments] = useState([])
     const [addInvestment] = useAddInvestmentMutation();
     useEffect(() => {
-        if(!isLoading)
-          setInvestments(data);
-     
-          
-    },[data])
+      if (!isLoading) {
+        setInvestments(data);
+        
+      }
+    }, [data, isLoading]);
+   
     const [investmentName, setInvestmentName] = useState("");
     const [amount, setAmount] = useState(0);
     const[investmentDate, setInvestmentDate] = useState("");
     const[investmentId, setInvestmentId] = useState(0)
     const [updateInvestment] = useUpdateInvestmentMutation();
+    
     const handleAddInvestment = (e) => {
       e.preventDefault();
       if (isUpdating) {
@@ -98,7 +103,6 @@ function InvestmentIndex() {
     const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
     const [selectedYear, setSelectedYear] = useState(date.getFullYear());
     
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
    
   return (
     <div className="container">
@@ -135,8 +139,8 @@ function InvestmentIndex() {
         
         <div className="row mt-3">
             <div className="offset-3 col-2">
-                <select className="form-select" id="monthSelect" aria-label="Default select example" onChange={(e) => {setSelectedMonth(e.target.value)}} >
-                    <option value={selectedMonth} selected>{months[selectedMonth]}</option>
+                <select className="form-select" id="monthSelect" aria-label="Default select example" onChange={(e) => {setSelectedMonth(e.target.value)}} defaultValue={selectedMonth}>
+                   {/* <!-- <option value={selectedMonth} selected>{months[selectedMonth]}</option> --> */}
                     <option value="0">January</option>
                     <option value="1">February</option>
                     <option value="2">March</option>
@@ -168,6 +172,15 @@ function InvestmentIndex() {
             })}
             handleUpdating = {handleUpdating}
             handleDelete = {handleDelete}/>
+        </div>
+        <div className="row mb-3"></div>
+        <div className="row mb-3"></div>
+        <div className="row mb-3"></div>
+        <div className='row mt-6'>
+          <div className='col-6 offset-2'>
+            <InvestmentGraph investments = {invetments}/>
+            
+          </div>
         </div>
     </div>
   )

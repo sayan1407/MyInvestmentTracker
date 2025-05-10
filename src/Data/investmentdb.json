@@ -3,20 +3,56 @@
     {
       "id": "884f",
       "investmentName": "Crypto",
-      "amount": 10000,
-      "date": "2025-05-10"
-    },
-    {
-      "id": "d358",
-      "investmentName": "Mid Cap Fund",
-      "amount": 7000,
-      "date": "2025-05-05"
+      "amount": "12000",
+      "date": "2025-05-15"
     },
     {
       "id": "87ef",
       "investmentName": "Large Cap Fund",
-      "amount": "2000",
-      "date": "2025-05-04"
+      "amount": "5000",
+      "date": "2025-05-08"
+    },
+    {
+      "id": "95f3",
+      "investmentName": " Mid cap Fund",
+      "amount": "5000",
+      "date": "2025-04-15"
+    },
+    {
+      "id": "ae64",
+      "investmentName": "Small Cap Fund",
+      "amount": "5000",
+      "date": "2025-05-15"
+    },
+    {
+      "id": "db8c",
+      "investmentName": "Large Cap Fund",
+      "amount": "6000",
+      "date": "2025-01-01"
+    },
+    {
+      "id": "76e5",
+      "investmentName": "Large Cap Fund",
+      "amount": "5000",
+      "date": "2025-02-10"
+    },
+    {
+      "id": "5102",
+      "investmentName": "Small Cap Fund",
+      "amount": "5000",
+      "date": "2025-02-14"
+    },
+    {
+      "id": "f78e",
+      "investmentName": "Crypto",
+      "amount": "5000",
+      "date": "2025-03-12"
+    },
+    {
+      "id": "f92e",
+      "investmentName": "Large Cap Fund",
+      "amount": "3000",
+      "date": "2025-04-05"
     }
   ]
 }
