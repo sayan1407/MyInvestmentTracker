@@ -53,6 +53,12 @@
       "investmentName": "Large Cap Fund",
       "amount": "3000",
       "date": "2025-04-05"
+    },
+    {
+      "id": "ccf8",
+      "investmentName": "Mid Cap Fund",
+      "amount": "3000",
+      "date": "2025-03-03"
     }
   ]
 }

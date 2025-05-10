@@ -3,6 +3,7 @@ import InvestmentList from './InvestmentList'
 import { useAddInvestmentMutation, useDeleteInvestmentMutation, useGetInvestmentsQuery, useUpdateInvestmentMutation } from './Api/investmentApi'
 import { useGetGraphQuery } from './Api/InvestmentGraphAPI'
 import InvestmentGraph from './InvestmentGraph';
+import InvestmentGraphByCategory from './InvestmentGraphByCategory';
 
 
 function InvestmentIndex() {
@@ -111,18 +112,18 @@ function InvestmentIndex() {
             <div className="col-6 offset-3 border">
                 <form  method="POST" onSubmit={handleAddInvestment}>
                     <div className="mb-3 mt-3">
-                        <label for="investmentName" className="form-label">Invetment Name</label>
+                        <label htmlFor="investmentName" className="form-label">Invetment Name</label>
                         <input type="text" className="form-control" id="investmentName" name="investmentName" 
                         value={investmentName} onChange={(e) => setInvestmentName(e.target.value)} required />
                     </div>
                     <div className="row mb-3">
                         <div className="col-6">
-                            <label for="amount" className="form-label">Amount</label>
+                            <label htmlFor="amount" className="form-label">Amount</label>
                             <input type="number" className="form-control" id="amount" name="amount" 
                             value={amount} onChange={(e) => setAmount(e.target.value)} min="1"  required/>
                         </div>
                         <div className="col-6">
-                            <label for="investmentDate" className="form-label">Date</label>
+                            <label htmlFor="investmentDate" className="form-label">Date</label>
                             <input type="date" className="form-control" id="investmentDate" name="investmentDate"
                             value={investmentDate} onChange={(e) => setInvestmentDate(e.target.value)}  required />
                         </div>
@@ -156,8 +157,8 @@ function InvestmentIndex() {
                 </select>
             </div>
             <div className="col-2">
-                <select className="form-select" id="monthSelect" aria-label="Default select example" onChange={(e) => {setSelectedYear(e.target.value)}} >
-                    <option selected>{selectedYear}</option>
+                <select className="form-select" id="monthSelect" aria-label="Default select example" onChange={(e) => {setSelectedYear(e.target.value)}} defaultValue={selectedYear} >
+                    {/* <option selected>{selectedYear}</option> */}
                     <option value="2025">2025</option>
                     
                 </select>
@@ -179,6 +180,12 @@ function InvestmentIndex() {
         <div className='row mt-6'>
           <div className='col-6 offset-2'>
             <InvestmentGraph investments = {invetments}/>
+            
+          </div>
+        </div>
+        <div className='row mt-6'>
+          <div className='col-6 offset-2'>
+            <InvestmentGraphByCategory investments = {invetments}/>
             
           </div>
         </div>
